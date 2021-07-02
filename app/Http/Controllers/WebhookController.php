@@ -51,10 +51,10 @@ class WebhookController extends Controller
     public function verification(Request $request)
     {
         // Your verify token. Should be a random string.
-        $VERIFY_TOKEN = "duc123";
+        $VERIFY_TOKEN = "duc";
 
         $input = $request->all();
-        
+
         // Parse the query params
         $mode = $input['hub_mode'];
         $token = $input['hub_verify_token'];
