@@ -60,19 +60,22 @@ class WebhookController extends Controller
         $token = $input['hub_verify_token'];
         $challenge = $input['hub_challenge'];
 
-        // Checks if a token and mode is in the query string of the request
-        if ($mode && $token) {
-
-            // Checks the mode and token sent is correct
-            if ($mode === 'subscribe' && $token === $VERIFY_TOKEN) {
-
-                // Responds with the challenge token from the request
+        // Responds with the challenge token from the request
                 return response()->json($challenge, 200);
 
-            } else {
-                // Responds with '403 Forbidden' if verify tokens do not match
-                return response()->json([], 403);
-            }
-        }
+//        // Checks if a token and mode is in the query string of the request
+//        if ($mode && $token) {
+//
+//            // Checks the mode and token sent is correct
+//            if ($mode === 'subscribe' && $token === $VERIFY_TOKEN) {
+//
+//                // Responds with the challenge token from the request
+//                return response()->json($challenge, 200);
+//
+//            } else {
+//                // Responds with '403 Forbidden' if verify tokens do not match
+//                return response()->json([], 403);
+//            }
+//        }
     }
 }
