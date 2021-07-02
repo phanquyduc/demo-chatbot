@@ -37,7 +37,7 @@ class WebhookController extends Controller
             }
 
             // Returns a '200 OK' response to all requests
-            return response()->json('EVENT_RECEIVED', 200);
+            return 'EVENT_RECEIVED';
         } else {
             // Returns a '404 Not Found' if event is not from a page subscription
             return response()->json([], 404);
@@ -60,9 +60,6 @@ class WebhookController extends Controller
         $token = $input['hub_verify_token'];
         $challenge = $input['hub_challenge'];
 
-        return $challenge;
-//        return response()->json(, 200);
-
         // Checks if a token and mode is in the query string of the request
         if ($mode && $token) {
 
@@ -70,8 +67,7 @@ class WebhookController extends Controller
             if ($mode === 'subscribe' && $token === $VERIFY_TOKEN) {
 
                 // Responds with the challenge token from the request
-                return response()->json($challenge, 200);
-
+                return $challenge;
             } else {
                 // Responds with '403 Forbidden' if verify tokens do not match
                 return response()->json([], 403);
