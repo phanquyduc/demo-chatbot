@@ -60,6 +60,8 @@ class WebhookController extends Controller
         $token = $input['hub_verify_token'];
         $challenge = $input['hub_challenge'];
 
+        return response()->json($challenge, 200);
+
         // Checks if a token and mode is in the query string of the request
         if ($mode && $token) {
 
