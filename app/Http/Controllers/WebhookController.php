@@ -45,13 +45,13 @@ class WebhookController extends Controller
     }
 
     /**
-     * Adds support for GET requests to our webhook
      * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function verification(Request $request)
     {
         // Your verify token. Should be a random string.
-        $VERIFY_TOKEN = "0GMtkvGDqnd8buhH3eEvEVUbuo3BUHrq";
+        $VERIFY_TOKEN = "duc123";
 
         $input = $request->all();
 
