@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class WebhookController extends Controller
 {
@@ -34,6 +35,17 @@ class WebhookController extends Controller
                 // Gets the message. entry.messaging is an array, but
                 // will only ever contain one message, so we get index 0
                 $webhook_event = $entry['messaging'][0];
+
+                // Get the sender PSID
+                $sender_psid = $webhook_event['sender']['id'];
+
+                // Check if the event is a message or postback and
+                // pass the event to the appropriate handler function
+                if($webhook_event['message']) {
+                    $this->handleMessage($sender_psid, $webhook_event['message']);
+                } elseif ($webhook_event['postback']) {
+                    $this->handlePostback($sender_psid, $webhook_event['postback']);
+                }
             }
 
             // Returns a '200 OK' response to all requests
@@ -51,7 +63,7 @@ class WebhookController extends Controller
     public function verification(Request $request)
     {
         // Your verify token. Should be a random string.
-        $VERIFY_TOKEN = "duc";
+        $VERIFY_TOKEN = env('VERIFY_TOKEN');
 
         $input = $request->all();
 
@@ -73,5 +85,35 @@ class WebhookController extends Controller
                 return response()->json([], 403);
             }
         }
+    }
+
+    // Handles messages events
+    private function handleMessage($sender_psid, $received_message) {
+        $response = [];
+
+        // Check if the message contains text
+        if($received_message['text']) {
+            // Create the payload for a basic text message
+            $response['text'] = 'You sent the message: ' .  $received_message['text'].  '. Now send me an image!';
+        }
+
+        // Sends the response message
+        $this->callSendAPI($sender_psid, $response);
+
+    }
+
+    private function callSendAPI($sender_psid, $response) {
+        $url = 'https://graph.facebook.com/v2.6/me/messages' . '?access_token=' . env('PAGE_ACCESS_TOKEN');
+        $result = Http::post($url, [
+            'recipient' => [
+                'id' => $sender_psid
+            ],
+            'message' => $response
+        ]);
+    }
+
+    // Handles messaging_postbacks events
+    private function handlePostback($sender_psid, $received_postback) {
+
     }
 }
