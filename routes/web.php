@@ -26,3 +26,9 @@ $router->get('/webhook', [
     'as' => 'webhook.verification', 'uses' => 'WebhookController@verification'
 ]);
 
+$router->get('/test', [
+    'as' => 'webhook.verification', 'uses' => 'WebhookController@test'
+]);
+
+
+

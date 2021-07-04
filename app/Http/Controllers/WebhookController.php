@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
+use GuzzleHttp\Client as Guzzle;
 
 class WebhookController extends Controller
 {
@@ -103,17 +103,48 @@ class WebhookController extends Controller
     }
 
     private function callSendAPI($sender_psid, $response) {
-        $url = 'https://graph.facebook.com/v2.6/me/messages' . '?access_token=' . env('PAGE_ACCESS_TOKEN');
-        $result = Http::post($url, [
-            'recipient' => [
-                'id' => $sender_psid
-            ],
-            'message' => $response
-        ]);
+        $client = new Guzzle(['base_uri' => 'https://graph.facebook.com']);
+
+        $result = $client->request(
+            'POST',
+            'v2.6/me/messages' . '?' . http_build_query([
+                'access_token' => env('PAGE_ACCESS_TOKEN')
+            ]),
+            [
+                'json' => [
+                    'recipient' => [
+                        'id' => $sender_psid
+                    ],
+                    'message' => $response
+                ]
+            ]
+        );
     }
 
     // Handles messaging_postbacks events
     private function handlePostback($sender_psid, $received_postback) {
 
+    }
+
+    public function test() {
+        $response = [];
+        $response['text'] = 'You sent the message:';
+
+        $client = new Guzzle(['base_uri' => 'https://graph.facebook.com']);
+
+        $result = $client->request(
+            'POST',
+            'v2.6/me/messages' . '?' . http_build_query([
+                'access_token' => env('PAGE_ACCESS_TOKEN')
+            ]),
+            [
+                'json' => [
+                    'recipient' => [
+                        'id' => 1283712
+                    ],
+                    'message' => $response
+                ]
+            ]
+        );;
     }
 }
