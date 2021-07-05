@@ -92,15 +92,19 @@ class WebhookController extends Controller
         $response = [];
 
         // Check if the message contains text
-        if ($received_message['text']) {
-            // Create the payload for a basic text message
-            $response['text'] = 'Bạn đã gửi tin nhắn: ' . $received_message['text'] . '. Now send me an image! PSID:' . $sender_psid;
-        } elseif ($received_message['attachments']) {
-            // Gets the URL of the message attachment
-            $attachment_url = $received_message['attachments'][0]['payload']['url'];
 
-            $response['text'] = $attachment_url;
-
+        if($received_message['text']) {
+            $response['text'] = 'Type:text';
+        } else {
+            $response['text'] = 'Type:other';
+        }
+//        if ($received_message['text']) {
+//            // Create the payload for a basic text message
+//            $response['text'] = 'Bạn đã gửi tin nhắn: ' . $received_message['text'] . '. Now send me an image! PSID:' . $sender_psid;
+//        } elseif ($received_message['attachments']) {
+//            // Gets the URL of the message attachment
+//            $attachment_url = $received_message['attachments'][0]['payload']['url'];
+//
 //            $response = [
 //                'attachment' => [
 //                    'type' => 'template',
@@ -128,7 +132,7 @@ class WebhookController extends Controller
 //                    ]
 //                ]
 //            ];
-        }
+//        }
 
         // Sends the response message
         $this->callSendAPI($sender_psid, $response);
