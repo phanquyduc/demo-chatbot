@@ -94,7 +94,7 @@ class WebhookController extends Controller
         // Check if the message contains text
         if($received_message['text']) {
             // Create the payload for a basic text message
-            $response['text'] = 'Bạn đã gửi tin nhắn: ' . $sender_psid . '. Now send me an image!';
+            $response['text'] = 'Bạn đã gửi tin nhắn: ' . $received_message['text'] . '. Now send me an image! PSID:' . $sender_psid;
         }
 
         // Sends the response message
@@ -127,7 +127,7 @@ class WebhookController extends Controller
 
     public function test() {
         $response = [];
-        $response['text'] = 'You sent the message:';
+        $response['text'] = 'You sent the message:1';
 
         $client = new Guzzle(['base_uri' => 'https://graph.facebook.com']);
 
@@ -139,7 +139,7 @@ class WebhookController extends Controller
             [
                 'json' => [
                     'recipient' => [
-                        'id' => 1283712
+                        'id' => 5640144536057383
                     ],
                     'message' => $response
                 ]
