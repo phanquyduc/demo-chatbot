@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use GuzzleHttp\Client as Guzzle;
+use Illuminate\Support\Facades\Log;
 
 class WebhookController extends Controller
 {
@@ -41,6 +42,7 @@ class WebhookController extends Controller
 
                 // Check if the event is a message or postback and
                 // pass the event to the appropriate handler function
+                Log::info('webhook_event', $webhook_event);
                 if($webhook_event['message']) {
                     $this->handleMessage($sender_psid, $webhook_event['message']);
                 } elseif ($webhook_event['postback']) {
