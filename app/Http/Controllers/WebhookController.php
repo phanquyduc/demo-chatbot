@@ -96,9 +96,12 @@ class WebhookController extends Controller
         // Check if the message contains text
 
         if($received_message['text']) {
+            Log::info('<<prepare: response text>>');
+            Log::info($received_message);
             $response['text'] = 'Type:text';
         } else {
             Log::info('<<prepare: response other>>');
+            Log::info($received_message);
             $response['text'] = 'Type:other';
         }
 //        if ($received_message['text']) {
