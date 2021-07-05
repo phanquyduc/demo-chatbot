@@ -155,7 +155,20 @@ class WebhookController extends Controller
 
     // Handles messaging_postbacks events
     private function handlePostback($sender_psid, $received_postback) {
+        $response = [];
 
+        // Get the payload for the postback
+        $payload = $received_postback['payload'];
+
+        // Set the response based on the postback payload
+        if ($payload === 'yes') {
+            $response['text'] = 'Thanks!';
+        } elseif ($payload === 'no') {
+            $response['text'] = 'Oops, try sending another image.';
+        }
+
+        // Send the message to acknowledge the postback
+        $this->callSendAPI($sender_psid, $response);
     }
 
     public function test() {
