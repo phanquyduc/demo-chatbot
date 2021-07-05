@@ -94,51 +94,41 @@ class WebhookController extends Controller
         $response = [];
 
         // Check if the message contains text
+        if (!empty($received_message['text'])) {
+            // Create the payload for a basic text message
+            $response['text'] = 'Bạn đã gửi tin nhắn: ' . $received_message['text'] . '. Now send me an image! PSID:' . $sender_psid;
+        } elseif (!empty($received_message['attachments'])) {
+            // Gets the URL of the message attachment
+            $attachment_url = $received_message['attachments'][0]['payload']['url'];
 
-        if(!empty($received_message['text'])) {
-            Log::info('<<prepare: response text>>');
-            Log::info($received_message);
-            $response['text'] = 'Type:text';
-        } else {
-            Log::info('<<prepare: response other>>');
-            Log::info($received_message);
-            $response['text'] = 'Type:other';
+            $response = [
+                'attachment' => [
+                    'type' => 'template',
+                    'payload' => [
+                        'template_type' => 'generic',
+                        'elements' => [
+                            [
+                                'title' => 'Is this the right picture?',
+                                'subtitle' => 'Tap a button to answer.',
+                                'image_url' => $attachment_url,
+                                'buttons' => [
+                                    [
+                                        'type' => 'postback',
+                                        'title' => 'Yes!',
+                                        'payload' => 'yes'
+                                    ],
+                                    [
+                                        'type' => 'postback',
+                                        'title' => 'No!',
+                                        'payload' => 'no'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ];
         }
-//        if ($received_message['text']) {
-//            // Create the payload for a basic text message
-//            $response['text'] = 'Bạn đã gửi tin nhắn: ' . $received_message['text'] . '. Now send me an image! PSID:' . $sender_psid;
-//        } elseif ($received_message['attachments']) {
-//            // Gets the URL of the message attachment
-//            $attachment_url = $received_message['attachments'][0]['payload']['url'];
-//
-//            $response = [
-//                'attachment' => [
-//                    'type' => 'template',
-//                    'payload' => [
-//                        'template_type' => 'generic',
-//                        'elements' => [
-//                            [
-//                                'title' => 'Is this the right picture?',
-//                                'subtitle' => 'Tap a button to answer.',
-//                                'image_url' => $attachment_url,
-//                                'buttons' => [
-//                                    [
-//                                        'type' => 'postback',
-//                                        'title' => 'Yes!',
-//                                        'payload' => 'yes'
-//                                    ],
-//                                    [
-//                                        'type' => 'postback',
-//                                        'title' => 'No!',
-//                                        'payload' => 'no'
-//                                    ]
-//                                ]
-//                            ]
-//                        ]
-//                    ]
-//                ]
-//            ];
-//        }
 
         // Sends the response message
         $this->callSendAPI($sender_psid, $response);
