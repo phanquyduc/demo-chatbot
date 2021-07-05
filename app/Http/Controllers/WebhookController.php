@@ -94,7 +94,7 @@ class WebhookController extends Controller
         // Check if the message contains text
         if($received_message['text']) {
             // Create the payload for a basic text message
-            $response['text'] = 'Bạn đã gửi tin nhắn: ' .  $received_message['text'].  '. Now send me an image!';
+            $response['text'] = 'Bạn đã gửi tin nhắn: ' . $sender_psid . '. Now send me an image!';
         }
 
         // Sends the response message
