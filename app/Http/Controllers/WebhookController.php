@@ -158,7 +158,35 @@ class WebhookController extends Controller
 
     public function test() {
         $response = [];
-        $response['text'] = 'You sent the message:1';
+//        $response['text'] = 'You sent the message:1';
+
+        $response = [
+            'attachment' => [
+                'type' => 'template',
+                'payload' => [
+                    'template_type' => 'generic',
+                    'elements' => [
+                        [
+                            'title' => 'Is this the right picture?',
+                            'subtitle' => 'Tap a button to answer.',
+                            'image_url' => 'https://scontent.fhan2-4.fna.fbcdn.net/v/t1.6435-0/p526x296/207822890_4255032357909947_4756174985248883043_n.jpg?_nc_cat=103&ccb=1-3&_nc_sid=8bfeb9&_nc_ohc=NCinjImcrr4AX9PRhwr&_nc_ht=scontent.fhan2-4.fna&tp=6&oh=6471e467d06b36d139c992748267ffa9&oe=60E7B4D3',
+                            'buttons' => [
+                                [
+                                    'type' => 'postback',
+                                    'title' => 'Yes!',
+                                    'payload' => 'yes'
+                                ],
+                                [
+                                    'type' => 'postback',
+                                    'title' => 'No!',
+                                    'payload' => 'no'
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
 
         $client = new Guzzle(['base_uri' => 'https://graph.facebook.com']);
 
