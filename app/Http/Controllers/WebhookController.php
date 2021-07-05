@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use GuzzleHttp\Client as Guzzle;
-use Illuminate\Support\Facades\Log;
+use Log;
 
 class WebhookController extends Controller
 {
