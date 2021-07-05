@@ -165,7 +165,7 @@ class WebhookController extends Controller
     }
 
     public function test() {
-        Log::info('test');
+        Log::error('test');
         $response = [];
 //        $response['text'] = 'You sent the message:1';
 
