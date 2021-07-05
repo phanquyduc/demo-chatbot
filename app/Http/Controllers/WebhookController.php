@@ -43,9 +43,9 @@ class WebhookController extends Controller
                 // Check if the event is a message or postback and
                 // pass the event to the appropriate handler function
                 Log::info('webhook_event', $webhook_event);
-                if($webhook_event['message']) {
+                if(!empty($webhook_event['message'])) {
                     $this->handleMessage($sender_psid, $webhook_event['message']);
-                } elseif ($webhook_event['postback']) {
+                } elseif (!empty($webhook_event['postback'])) {
                     $this->handlePostback($sender_psid, $webhook_event['postback']);
                 }
             }
@@ -95,7 +95,7 @@ class WebhookController extends Controller
 
         // Check if the message contains text
 
-        if($received_message['text']) {
+        if(!empty($received_message['text'])) {
             Log::info('<<prepare: response text>>');
             Log::info($received_message);
             $response['text'] = 'Type:text';
